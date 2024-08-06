@@ -1,14 +1,15 @@
 package com.laa66.githubInspector.rest;
 
+import com.laa66.githubInspector.dto.ExceptionDto;
 import com.laa66.githubInspector.dto.RepositoryDto;
+import com.laa66.githubInspector.exception.UserNotFoundException;
 import com.laa66.githubInspector.service.GithubDataService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
-@RestController("/github")
+@RestController
 @AllArgsConstructor
 public class InspectorController {
 
@@ -17,6 +18,14 @@ public class InspectorController {
     @GetMapping("/{username}")
     public Flux<RepositoryDto> getUserRepositories(@PathVariable String username) {
         return githubDataService.getUserRepositoriesWithBranches(username);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(UserNotFoundException.class)
+    public ExceptionDto handleUserNotFoundException(UserNotFoundException ex) {
+        return new ExceptionDto(
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage());
     }
 
 }
