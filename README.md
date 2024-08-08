@@ -41,7 +41,7 @@ To run tests use following command:
 ## Endpoints 🗺️
 
 #### Get User Repositories and Branches
-* URL: ``/github/{username}``
+* URL: ``/{username}``
 * Method: ``GET``
 * Description: Retrieves a list of non-fork repositories for the specified GitHub user, along with branch information for each repository.
 
